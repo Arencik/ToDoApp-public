@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
+
 
 class Task(models.Model):
     user = models.ForeignKey(
@@ -13,7 +13,7 @@ class Task(models.Model):
         ('0', 'Waiting'),
         ('1', 'On hold'),
         ('2', 'Working on it'),
-        ('3', 'Done')
+        ('3', 'Done'),
     )
     status = models.CharField(max_length=15, choices=statuses, default='waiting')
     if status == '3':
@@ -22,6 +22,7 @@ class Task(models.Model):
         status = '3'
     def __str__(self):
         return self.title
-    
+
+
     class Meta:
         ordering = ['complete']

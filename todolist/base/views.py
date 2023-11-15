@@ -12,7 +12,6 @@ from django.urls import reverse_lazy
 
 from .models import Task
 
-# Create your views here.
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -21,13 +20,13 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('tasks')
-    
+
+
 class RegisterPage(FormView):
     template_name = 'base/register.html'
     form_class = UserCreationForm
     redirect_authenticated_user = True
     success_url = reverse_lazy('tasks')
-
 
     def form_valid(self, form):
         user = form.save()
@@ -38,6 +37,7 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
+
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
@@ -62,6 +62,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
     template_name = 'base/task.html'
 
+
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
@@ -71,10 +72,13 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
 
+
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = '__all__'
     success_url = reverse_lazy('tasks')
+
+
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
